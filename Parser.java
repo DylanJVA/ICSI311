@@ -218,7 +218,7 @@ public class Parser {
             else throw new Exception("FOR statement may not be incremented with decimals");
         }
         else throw new Exception("FOR statement expecting bounding integer");
-        if (matchAndRemove(Token.Type.STEP) == null) return new ForNode(var, n1, n2);
+        if (matchAndRemove(Token.Type.STEP) == null) return new ForNode(var, n1, n2, new IntegerNode(1));
         else
         {
             if ((t = matchAndRemove(Token.Type.NUMBER)) != null)

@@ -4,13 +4,6 @@ public class ForNode extends StatementNode {
     private IntegerNode endingValue;
     private IntegerNode step;
 
-    public ForNode(VariableNode v, IntegerNode n1, IntegerNode n2) {
-        this.var = v;
-        this.initialValue = n1;
-        this.endingValue = n2;
-        this.step = new IntegerNode(1);
-    }
-
     public ForNode(VariableNode v, IntegerNode n1, IntegerNode n2, IntegerNode s) {
         this.var = v;
         this.initialValue = n1;
