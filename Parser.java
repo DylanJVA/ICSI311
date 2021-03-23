@@ -2,6 +2,7 @@
  *  Parser Class
  *  Looks through a list of lexemes and parses the tokens into an AST data structure
  * @author Dylan VanAllen
+ * @version 1.0
  */
 
 import java.util.*;
