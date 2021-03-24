@@ -5,12 +5,12 @@ public class GosubNode extends StatementNode {
         this.go = g;
     }
 
-    public VariableNode getGoto() {
+    public VariableNode getGosub() {
         return this.go;
     }
 
     public String toString() {
-        return "Goto("+go.toString()+")";
+        return "Gosub("+go.toString()+")";
     }
     
 }

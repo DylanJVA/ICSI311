@@ -99,7 +99,7 @@ public class Parser {
         else return null;
     }
 
-    public StatementNode printStatement() throws Exception {
+    public PrintNode printStatement() throws Exception {
         ArrayList<Node> expressionList = new ArrayList<Node>();
         Node print;
         while ((print = printList()) != null) 
@@ -123,13 +123,13 @@ public class Parser {
         else return thisPrint;
 	}
 
-    public StatementNode assignment(Token t) throws Exception{
+    public AssignmentNode assignment(Token t) throws Exception{
         if (matchAndRemove(Token.Type.EQUALS) != null)
             return new AssignmentNode(new VariableNode(t.getTokenValue()), expression());
         else return null;
     }
 
-    public StatementNode readStatement() throws Exception {
+    public ReadNode readStatement() throws Exception {
         ArrayList<VariableNode> readVars = new ArrayList<VariableNode>(); //node will hold a list of variables
         VariableNode read;
         while ((read = readList()) != null) 
@@ -146,7 +146,7 @@ public class Parser {
         return v;
 	}
 
-    public StatementNode dataStatement() throws Exception {
+    public DataNode dataStatement() throws Exception {
         ArrayList<Node> dataList = new ArrayList<Node>(); //node will hold a list of strings, int nodes, or float nodes
         Node data;
         while ((data = dataList()) != null) 
@@ -172,11 +172,10 @@ public class Parser {
         return thisData;
 	}
 
-    public StatementNode inputStatement() throws Exception {
+    public InputNode inputStatement() throws Exception {
         ArrayList<Node> inputList = new ArrayList<Node>(); //holds a string and then a list of variables
         Token s = matchAndRemove(Token.Type.STRING);
-        if (s == null) throw new Exception("INPUT expecting initial string");
-        else inputList.add(new StringNode(s.getTokenValue()));
+        if (s != null) inputList.add(new StringNode(s.getTokenValue()));
         matchAndRemove(Token.Type.COMMA);
         Node input;
         while ((input = inputList()) != null) 
@@ -194,13 +193,13 @@ public class Parser {
         return v;
 	}
 
-    public StatementNode labelStatement(Token t) throws Exception{
+    public LabeledStatementNode labelStatement(Token t) throws Exception{
         String s = t.getTokenValue();
         StatementNode statement = statement();
         return new LabeledStatementNode(s, statement);
     }
 
-    public StatementNode forStatement() throws Exception{
+    public ForNode forStatement() throws Exception{
         VariableNode var = new VariableNode(matchAndRemove(Token.Type.IDENTIFIER).getTokenValue());
         if (matchAndRemove(Token.Type.EQUALS) == null) throw new Exception("FOR statement expecting equals token");
         Token t;
@@ -231,15 +230,15 @@ public class Parser {
         }
     }
 
-    public StatementNode nextStatement() throws Exception{
+    public NextNode nextStatement() throws Exception{
         Token t;
         if ((t=matchAndRemove(Token.Type.IDENTIFIER))!=null)
-            return new NextNode(new VariableNode(t.getTokenValue()));
+            return new NextNode(new VariableNode(t.getTokenValue()));//identifiers are variable nodes
         else throw new Exception("NEXT statement requires variable");
     
     }
 
-    public StatementNode gosubStatement() throws Exception{
+    public GosubNode gosubStatement() throws Exception{
         Token t;
         if ((t = matchAndRemove(Token.Type.IDENTIFIER))!=null)
             return new GosubNode(new VariableNode(t.getTokenValue()));
