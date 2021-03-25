@@ -167,13 +167,13 @@ public class Parser {
             }
             else return null;
         }
-        else thisData = new StringNode(s.getTokenValue());
+        else thisData = new StringNode(s.getTokenValue()); 
         matchAndRemove(Token.Type.COMMA); 
         return thisData;
 	}
 
     public InputNode inputStatement() throws Exception {
-        ArrayList<Node> inputList = new ArrayList<Node>(); //holds a string and then a list of variables
+        ArrayList<Node> inputList = new ArrayList<Node>(); //holds an optional string and then a list of variables so i used super type node
         Token s = matchAndRemove(Token.Type.STRING);
         if (s != null) inputList.add(new StringNode(s.getTokenValue()));
         matchAndRemove(Token.Type.COMMA);
@@ -187,7 +187,7 @@ public class Parser {
 	{
 		VariableNode v;
         Token t;
-        if ((t=matchAndRemove(Token.Type.IDENTIFIER))!=null) v = new VariableNode(t.getTokenValue());
+        if ((t=matchAndRemove(Token.Type.IDENTIFIER))!=null) v = new VariableNode(t.getTokenValue());//v will be each variable in INPUT
         else return null;
         matchAndRemove(Token.Type.COMMA); 
         return v;
@@ -199,7 +199,7 @@ public class Parser {
         return new LabeledStatementNode(s, statement);
     }
 
-    public ForNode forStatement() throws Exception{
+    public ForNode forStatement() throws Exception{ //of form FOR variable = initial_value TO limit STEP increment
         VariableNode var = new VariableNode(matchAndRemove(Token.Type.IDENTIFIER).getTokenValue());
         if (matchAndRemove(Token.Type.EQUALS) == null) throw new Exception("FOR statement expecting equals token");
         Token t;
