@@ -133,7 +133,10 @@ public class Parser {
         ArrayList<VariableNode> readVars = new ArrayList<VariableNode>(); //node will hold a list of variables
         VariableNode read;
         while ((read = readList()) != null) 
+        {
             readVars.add(read); 
+            matchAndRemove(Token.Type.COMMA);
+        }
         return new ReadNode(readVars); 
     }
 
@@ -142,7 +145,6 @@ public class Parser {
         VariableNode v;
         if ((t=matchAndRemove(Token.Type.IDENTIFIER))!=null) v = new VariableNode(t.getTokenValue());
         else throw new Exception("READ statement expecting variable");
-        matchAndRemove(Token.Type.COMMA);
         return v;
 	}
 
@@ -150,7 +152,10 @@ public class Parser {
         ArrayList<Node> dataList = new ArrayList<Node>(); //node will hold a list of strings, int nodes, or float nodes
         Node data;
         while ((data = dataList()) != null) 
+        {
             dataList.add(data); 
+            matchAndRemove(Token.Type.COMMA);
+        }
         return new DataNode(dataList); 
     }
     
@@ -168,7 +173,6 @@ public class Parser {
             else return null;
         }
         else thisData = new StringNode(s.getTokenValue()); 
-        matchAndRemove(Token.Type.COMMA); 
         return thisData;
 	}
 
@@ -178,8 +182,11 @@ public class Parser {
         if (s != null) inputList.add(new StringNode(s.getTokenValue()));
         matchAndRemove(Token.Type.COMMA);
         Node input;
-        while ((input = inputList()) != null) 
-            inputList.add(input); 
+        while ((input = inputList()) != null)
+        {
+            inputList.add(input);
+            matchAndRemove(Token.Type.COMMA);
+        }
         return new InputNode(inputList); 
     }
 
@@ -189,7 +196,6 @@ public class Parser {
         Token t;
         if ((t=matchAndRemove(Token.Type.IDENTIFIER))!=null) v = new VariableNode(t.getTokenValue());//v will be each variable in INPUT
         else return null;
-        matchAndRemove(Token.Type.COMMA); 
         return v;
 	}
 
