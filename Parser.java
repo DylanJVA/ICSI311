@@ -144,6 +144,7 @@ public class Parser {
 		Token t;
         VariableNode v;
         if ((t=matchAndRemove(Token.Type.IDENTIFIER))!=null) v = new VariableNode(t.getTokenValue());
+        else if (matchAndRemove(Token.Type.EndOfLine) != null) return null;
         else throw new Exception("READ statement expecting variable");
         return v;
 	}

@@ -26,7 +26,7 @@ public class Lexer {
     public static boolean charIsAllowed(states state, char c) {
         if (c == ':' || c == '$' || c == '%')
         {
-            if (state == states.WORD) return true;
+            if (state == states.WORD || state == states.STRING) return true;
             else return false;
         }
         else if (c == '.' && state == states.DECIMAL) return false;
