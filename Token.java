@@ -7,7 +7,7 @@ public class Token {
     public enum Type{
         SPACE, PLUS, MINUS, TIMES, DIVIDE, NUMBER, EQUALS, LPAREN, RPAREN, LESSTHAN, LESSTHANEQUAL, 
         GREATERTHAN, GREATERTHANEQUAL, NOTEQUALS, STRING,  IDENTIFIER, PRINT, LABEL, COMMA, INPUT, DATA, READ,
-        FOR, GOSUB, RETURN, NEXT, STEP, TO, EndOfLine
+        FOR, GOSUB, RETURN, NEXT, STEP, TO, RANDOM, LEFT$, RIGHT$, MID$, NUM$, VAL, VAL2, IF, EndOfLine
     }
     private Type token;
     private String value = null;

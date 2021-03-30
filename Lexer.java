@@ -77,6 +77,15 @@ public class Lexer {
         knownWords.put("GOSUB", Token.Type.GOSUB);
         knownWords.put("STEP", Token.Type.STEP);
         knownWords.put("RETURN", Token.Type.RETURN);
+        knownWords.put("RANDOM()", Token.Type.RANDOM);
+        knownWords.put("LEFT$", Token.Type.LEFT$);
+        knownWords.put("RIGHT$", Token.Type.RIGHT$);
+        knownWords.put("MID$", Token.Type.MID$);
+        knownWords.put("NUM$", Token.Type.NUM$);
+        knownWords.put("VAL", Token.Type.VAL);
+        knownWords.put("VAL%", Token.Type.VAL2);
+        knownWords.put("IF", Token.Type.IF);
+
         
         states state = states.SPACE;
         List<Token> tokens = new ArrayList<>();

@@ -33,7 +33,8 @@ public class Parser {
         if (matchAndRemove(Token.Type.LPAREN) != null) //check if an expression has begun
         {
             thisFactor = expression();
-            if (matchAndRemove(Token.Type.RPAREN) == null) throw new Exception("Unclosed parenthesis detected.");//make sure parentheses end
+            if (matchAndRemove(Token.Type.RPAREN) == null)
+                throw new Exception("Unclosed parenthesis detected.");//make sure parentheses end
             else return thisFactor;
         }
         if ((token = matchAndRemove(Token.Type.IDENTIFIER)) != null)
@@ -47,9 +48,25 @@ public class Parser {
     public Node expression() throws Exception {
         Node thisExpression;
         thisExpression = term(); //operator 1 is first term found
+        if (thisExpression == null) thisExpression = functionInvocation();
         //recursively look for more terms
-        if (matchAndRemove(Token.Type.PLUS) != null) return new MathOpNode(MathOpNode.Operations.add, thisExpression, expression());
-        else if (matchAndRemove(Token.Type.MINUS) != null) return new MathOpNode(MathOpNode.Operations.subtract, thisExpression, expression());
+        Node nextExpression;
+        if (matchAndRemove(Token.Type.PLUS) != null)
+        {
+            nextExpression= expression();
+            if (nextExpression != null)
+                return new MathOpNode(MathOpNode.Operations.add, thisExpression, nextExpression);
+            else
+                return functionInvocation();
+        }
+        else if (matchAndRemove(Token.Type.MINUS) != null)
+        {
+            nextExpression= expression();
+            if (nextExpression != null)
+                return new MathOpNode(MathOpNode.Operations.subtract, thisExpression, nextExpression);
+            else
+                return functionInvocation();
+        }
         else return thisExpression;
     }
 
@@ -95,7 +112,10 @@ public class Parser {
         {
             if (matchAndRemove(Token.Type.EndOfLine) != null) return new ReturnNode();
             else throw new Exception("RETURN must be alone on line");
-        }    
+        }
+        if (matchAndRemove(Token.Type.IF) != null) {
+            return ifStatement();
+        }
         else return null;
     }
 
@@ -112,15 +132,11 @@ public class Parser {
 
     public Node printList() throws Exception
 	{
-		Node thisPrint = expression();
-        Token s;
-        if (thisPrint == null)//if expression doesnt work check for string
-        {
-            if ((s=matchAndRemove(Token.Type.STRING)) != null)
-                return new StringNode(s.getTokenValue());
-            else return null;
-        }
-        else return thisPrint;
+		Token s;
+        if ((s=matchAndRemove(Token.Type.STRING)) != null)
+            return new StringNode(s.getTokenValue());
+        else 
+            return expression();
 	}
 
     public AssignmentNode assignment(Token t) throws Exception{
@@ -251,6 +267,49 @@ public class Parser {
             return new GosubNode(new VariableNode(t.getTokenValue()));
         else throw new Exception("GOSUB statement requires label name");
     }
+
+    public IfNode ifStatement() throws Exception {
+        if (matchAndRemove(Token.Type.LPAREN)==null) throw new Exception("IF needs ()");
+        BooleanOperationNode thisBool = boolExpression();
+        if (thisBool != null)
+        {
+            if (matchAndRemove(Token.Type.RPAREN)==null) throw new Exception("Missing closing parenthesis");
+            else return new IfNode(thisBool);
+        }
+        else throw new Exception("IF statement requires a boolean expression");
+    }
+
+    public BooleanOperationNode boolExpression() throws Exception{
+        Node exp1 = expression();
+        Token op = tokens.remove(0);
+        Node exp2 = expression();
+        return new BooleanOperationNode(op.getTokenType(), exp1, exp2);
+    }
+
+    public FunctionNode functionInvocation() throws Exception {
+        Token removedToken;
+        String functionName;
+        List<Node> args = new ArrayList<Node>();
+        if ((removedToken = matchAndRemove(Token.Type.RANDOM)) != null || (removedToken = matchAndRemove(Token.Type.LEFT$)) != null ||
+        (removedToken = matchAndRemove(Token.Type.RIGHT$)) != null || (removedToken = matchAndRemove(Token.Type.MID$)) != null || 
+        (removedToken = matchAndRemove(Token.Type.NUM$)) != null || (removedToken = matchAndRemove(Token.Type.VAL)) != null || 
+        (removedToken = matchAndRemove(Token.Type.VAL2)) != null) functionName=removedToken.toString();
+        else {
+            for (Token t : tokens) System.out.print(t.toString()+",");
+            throw new Exception("Expression or function required here");
+        }
+        if (matchAndRemove(Token.Type.LPAREN)==null) throw new Exception("Function needs ()");
+        Node arg;
+        while ((arg = printList()) != null) 
+        {
+            args.add(arg); 
+            matchAndRemove(Token.Type.COMMA); //remove separating commas
+        }
+        if (matchAndRemove(Token.Type.RPAREN)==null) throw new Exception("Missing closing parenthesis");
+        return new FunctionNode(functionName, args);
+    }
+
+
 
     public Node parse() throws Exception{
         return statements();
