@@ -283,7 +283,11 @@ public class Parser {
         Node exp1 = expression();
         Token op = tokens.remove(0);
         Node exp2 = expression();
-        return new BooleanOperationNode(op.getTokenType(), exp1, exp2);
+        if (exp1 == null || exp2 == null || (op.getTokenType() != Token.Type.GREATERTHAN && 
+        op.getTokenType() != Token.Type.LESSTHAN && op.getTokenType() != Token.Type.GREATERTHANEQUAL &&
+        op.getTokenType() != Token.Type.LESSTHANEQUAL && op.getTokenType() != Token.Type.NOTEQUALS &&
+        op.getTokenType() != Token.Type.EQUALS)) return null; //make sure expressions arent null and operator is acceptable
+        else return new BooleanOperationNode(op.getTokenType(), exp1, exp2);
     }
 
     public FunctionNode functionInvocation() throws Exception {
@@ -293,11 +297,11 @@ public class Parser {
         if ((removedToken = matchAndRemove(Token.Type.RANDOM)) != null || (removedToken = matchAndRemove(Token.Type.LEFT$)) != null ||
         (removedToken = matchAndRemove(Token.Type.RIGHT$)) != null || (removedToken = matchAndRemove(Token.Type.MID$)) != null || 
         (removedToken = matchAndRemove(Token.Type.NUM$)) != null || (removedToken = matchAndRemove(Token.Type.VAL)) != null || 
-        (removedToken = matchAndRemove(Token.Type.VAL2)) != null) functionName=removedToken.toString();
+        (removedToken = matchAndRemove(Token.Type.VAL2)) != null) functionName=removedToken.toString(); //check for known function tokens
         else return null;
         if (matchAndRemove(Token.Type.LPAREN)==null) throw new Exception("Function needs ()");
         Node arg;
-        while ((arg = printList()) != null) 
+        while ((arg = printList()) != null) //use printlist because it also accepts expression and string
         {
             args.add(arg); 
             matchAndRemove(Token.Type.COMMA); //remove separating commas
