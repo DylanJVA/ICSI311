@@ -77,7 +77,7 @@ public class Lexer {
         knownWords.put("GOSUB", Token.Type.GOSUB);
         knownWords.put("STEP", Token.Type.STEP);
         knownWords.put("RETURN", Token.Type.RETURN);
-        knownWords.put("RANDOM()", Token.Type.RANDOM);
+        knownWords.put("RANDOM", Token.Type.RANDOM);
         knownWords.put("LEFT$", Token.Type.LEFT$);
         knownWords.put("RIGHT$", Token.Type.RIGHT$);
         knownWords.put("MID$", Token.Type.MID$);

@@ -56,13 +56,12 @@ public class Basic {
                 try { //checks if lexer will encounter any illegal symbols
                     List<Token> lineTokenList = Lexer.lex(lines.get(i));
                     tokenList.add(lineTokenList);
+                    printParsedLine(lines.get(i), tokenList.get(i));
                 } catch (Exception e) {
                     System.out.println(e.getMessage()+" Line ignored: '"+lines.get(i)+"'.");
                     badLines.add(i);
                 }
             }
-            //printLexemes(lines, badLines, tokenList); //Print Lexer Output - no longer necessary
-            printParsedLine(lines.get(0), tokenList.get(0)); //Print Parser Output (for line 1)
             
         } catch (IOException openFileException) {
             System.out.println("Could not open file with path: "+args[0]);
