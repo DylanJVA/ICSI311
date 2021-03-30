@@ -269,14 +269,13 @@ public class Parser {
     }
 
     public IfNode ifStatement() throws Exception {
-        if (matchAndRemove(Token.Type.LPAREN)==null) throw new Exception("IF needs ()");
         BooleanOperationNode thisBool = boolExpression();
-        if (thisBool != null)
-        {
-            if (matchAndRemove(Token.Type.RPAREN)==null) throw new Exception("Missing closing parenthesis");
-            else return new IfNode(thisBool);
-        }
-        else throw new Exception("IF statement requires a boolean expression");
+        if (thisBool == null) throw new Exception("IF statement requires a boolean expression");
+        if (matchAndRemove(Token.Type.THEN) == null) throw new Exception("IF statement requires THEN");
+        Token label;
+        if ((label = matchAndRemove(Token.Type.LABEL)) == null) throw new Exception("IF statement requires label token");
+        else return new IfNode(thisBool, label.getTokenValue());
+
     }
 
     public BooleanOperationNode boolExpression() throws Exception{

@@ -85,6 +85,7 @@ public class Lexer {
         knownWords.put("VAL", Token.Type.VAL);
         knownWords.put("VAL%", Token.Type.VAL2);
         knownWords.put("IF", Token.Type.IF);
+        knownWords.put("THEN", Token.Type.THEN);
 
         
         states state = states.SPACE;
