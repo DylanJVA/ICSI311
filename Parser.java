@@ -294,10 +294,7 @@ public class Parser {
         (removedToken = matchAndRemove(Token.Type.RIGHT$)) != null || (removedToken = matchAndRemove(Token.Type.MID$)) != null || 
         (removedToken = matchAndRemove(Token.Type.NUM$)) != null || (removedToken = matchAndRemove(Token.Type.VAL)) != null || 
         (removedToken = matchAndRemove(Token.Type.VAL2)) != null) functionName=removedToken.toString();
-        else {
-            for (Token t : tokens) System.out.print(t.toString()+",");
-            throw new Exception("Expression or function required here");
-        }
+        else return null;
         if (matchAndRemove(Token.Type.LPAREN)==null) throw new Exception("Function needs ()");
         Node arg;
         while ((arg = printList()) != null) 
