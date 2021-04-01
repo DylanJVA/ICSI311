@@ -35,6 +35,7 @@ public class Basic {
             try {
                 Parser p = new Parser(tokens);
                 System.out.println("Parsed line: "+p.parse().toString());
+                System.out.println("--------------------------------------");
             } catch (Exception e) {
                 System.out.println(e.toString());
             }

@@ -57,7 +57,7 @@ public class Parser {
             if (nextExpression != null)
                 return new MathOpNode(MathOpNode.Operations.add, thisExpression, nextExpression);
             else
-                return functionInvocation();
+                return new MathOpNode(MathOpNode.Operations.add, thisExpression, functionInvocation());
         }
         else if (matchAndRemove(Token.Type.MINUS) != null)
         {
@@ -65,7 +65,7 @@ public class Parser {
             if (nextExpression != null)
                 return new MathOpNode(MathOpNode.Operations.subtract, thisExpression, nextExpression);
             else
-                return functionInvocation();
+                return new MathOpNode(MathOpNode.Operations.subtract, thisExpression, functionInvocation());
         }
         else return thisExpression;
     }
@@ -273,7 +273,7 @@ public class Parser {
         if (thisBool == null) throw new Exception("IF statement requires a boolean expression");
         if (matchAndRemove(Token.Type.THEN) == null) throw new Exception("IF statement requires THEN");
         Token label;
-        if ((label = matchAndRemove(Token.Type.LABEL)) == null) throw new Exception("IF statement requires label token");
+        if ((label = matchAndRemove(Token.Type.IDENTIFIER)) == null) throw new Exception("IF statement requires label token");
         else return new IfNode(thisBool, label.getTokenValue());
 
     }
@@ -296,7 +296,7 @@ public class Parser {
         if ((removedToken = matchAndRemove(Token.Type.RANDOM)) != null || (removedToken = matchAndRemove(Token.Type.LEFT$)) != null ||
         (removedToken = matchAndRemove(Token.Type.RIGHT$)) != null || (removedToken = matchAndRemove(Token.Type.MID$)) != null || 
         (removedToken = matchAndRemove(Token.Type.NUM$)) != null || (removedToken = matchAndRemove(Token.Type.VAL)) != null || 
-        (removedToken = matchAndRemove(Token.Type.VAL2)) != null) functionName=removedToken.toString(); //check for known function tokens
+        (removedToken = matchAndRemove(Token.Type.VAL2)) != null) functionName=removedToken.getTokenValue(); //check for known function tokens
         else return null;
         if (matchAndRemove(Token.Type.LPAREN)==null) throw new Exception("Function needs ()");
         Node arg;
