@@ -79,7 +79,7 @@ public class Parser {
         else return thisTerm;
     }
 
-    public Node statements() throws Exception {
+    public StatementsNode statements() throws Exception {
         ArrayList<StatementNode> statementsList = new ArrayList<StatementNode>();
         StatementNode thisStatement;
         while((thisStatement = statement()) != null)
@@ -311,7 +311,7 @@ public class Parser {
 
 
 
-    public Node parse() throws Exception{
+    public StatementsNode parse() throws Exception{
         return statements();
     }
 }

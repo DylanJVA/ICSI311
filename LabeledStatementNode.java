@@ -15,6 +15,10 @@ public class LabeledStatementNode extends StatementNode {
         return this.statement;
     }
 
+    public void accept() {
+        Interpreter.labeledStatementVisit(this);
+    }
+
     public String toString() {
         return "LabeledStatement("+label+": "+statement.toString()+")";
     }

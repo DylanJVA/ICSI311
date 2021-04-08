@@ -9,6 +9,9 @@ public class DataNode extends StatementNode {
         return this.data;
     }
 
+    public void accept() {
+        Interpreter.dataVisit(this);
+    }
     public String toString() {
         String s = "Data(";
         for (Node d : data)

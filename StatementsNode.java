@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.String;
 public class StatementsNode extends Node {
     private List<StatementNode> statements;
 
@@ -8,6 +9,10 @@ public class StatementsNode extends Node {
 
     public List<StatementNode> getStatements() {
         return this.statements;
+    }
+
+    public void addToList(List<StatementNode> s) {
+        statements.addAll(s);
     }
 
     public String toString() {

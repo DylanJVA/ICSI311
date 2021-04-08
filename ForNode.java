@@ -3,6 +3,7 @@ public class ForNode extends StatementNode {
     private IntegerNode initialValue;
     private IntegerNode endingValue;
     private IntegerNode step;
+    private Node afterNext;
 
     public ForNode(VariableNode v, IntegerNode n1, IntegerNode n2, IntegerNode s) {
         this.var = v;
@@ -25,6 +26,18 @@ public class ForNode extends StatementNode {
 
     public IntegerNode getStep() {
         return this.step;
+    }
+
+    public void setNext(Node n) {
+        afterNext = n;
+    }
+
+    public Node getNext() {
+        return this.afterNext;
+    }
+
+    public void accept() {
+        Interpreter.forNextVisit(this);
     }
 
     public String toString() {
